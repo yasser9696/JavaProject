@@ -6,7 +6,6 @@
 package task;
 
 // Importing The Required Libraries
-import java.awt.Color;
 import java.sql.DriverManager;
 import java.sql.*;
 import java.util.regex.Matcher;
@@ -27,7 +26,6 @@ public class Student_Form extends javax.swing.JFrame {
     }
     
     
-    // Intiating Connection Variables
     Connection con = null;
     Statement st = null;
     ResultSet rs = null;
@@ -220,21 +218,16 @@ public class Student_Form extends javax.swing.JFrame {
 
         DefaultTableModel model = (DefaultTableModel)table.getModel();
 
-//        String newline = System.getProperty("line.separator");
         String name = txtname.getText();
         String mail = txtmail.getText();
         String age = txtage.getText();
         String phone = txtphone.getText();
         
         
-        // Regular Exepression
-        boolean status;
         String Email_Pattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
         Pattern pattern = Pattern.compile(Email_Pattern);
         Matcher matcher = pattern.matcher(mail);
-
-        status = matcher.matches() ? true : false;
 
         
         // Text Fields Validation (No Empty Fields)
@@ -242,34 +235,26 @@ public class Student_Form extends javax.swing.JFrame {
             errors.setText("One or more inputs are missing !!");
         }
         // Email Validation (Regular Exepression)
-        else if (status == false) {
+        else if (matcher.matches() == false) {
             errors.setText("Invalid Email");
         } else {
-
             errors.setText("");
-
             try {
                 
-                
-                // Starting Connection
                 Class.forName(driver).newInstance();
-                con = DriverManager.getConnection(url,"root","123");
+                con = DriverManager.getConnection(url,"yasser","123456");
                 System.out.println("Connected !!");
                 
-                // Sql Command For Inserting New Row Into The users Table In The Database 
                 String sql="INSERT INTO users(Name, Email, Age, Phone)"
                 + "VALUES('"+name+"','"+mail+"','"+age+"','"+phone+"')";
                 
-                // Executing Sql Command
                 st = con.createStatement();
                 st.executeUpdate(sql);
                 st.close();
                 
-                // Selecting The Last Inserted Row To Show It In The Jtable
                 st = con.createStatement();
                 rs = st.executeQuery("SELECT * FROM users ORDER BY UserID DESC FETCH FIRST ROW ONLY");
 
-                // Adding The Selected Row To The Jtable
                 Object[] row = new Object[5];
                 while(rs.next()) {
 
@@ -279,32 +264,17 @@ public class Student_Form extends javax.swing.JFrame {
                     row[3] = rs.getString(4);
                     row[4] = rs.getString(5);
                     model.addRow(row);
-                    userID.setText(rs.getString(1));
                 }
                 
                 
-                // Closing Connection
                 st.close();
                 con.close();
                 System.out.println("Disconnected !!");
                 
-                // Resetting TextFields
                 txtname.setText("");
-                txtname.setBackground(Color.white);
-                txtname.setEditable(true);
-
                 txtmail.setText("");
-                txtmail.setBackground(Color.white);
-                txtmail.setEditable(true);
-
                 txtage.setText("");
-                txtage.setBackground(Color.white);
-                txtage.setEditable(true);
-
                 txtphone.setText("");
-                txtphone.setBackground(Color.white);
-                txtphone.setEditable(true);
-
                 userID.setText("");
                 errors.setText("");
 
@@ -321,17 +291,14 @@ public class Student_Form extends javax.swing.JFrame {
 
         
         try {
-            // Starting Connection
             Class.forName(driver).newInstance();
-            con = DriverManager.getConnection(url,"root","123");
+            con = DriverManager.getConnection(url,"yasser","123456");
             System.out.println("Connected !!");
             
             
-            // Selecting Everything In The users Table In The Database To Show It In The Jtable
             st = con.createStatement();
             rs = st.executeQuery("SELECT * FROM users ORDER BY UserID ASC");
 
-            // Inserting Everything Into The Jtable
             Object[] row = new Object[5];
             while(rs.next()) {
 
@@ -344,7 +311,6 @@ public class Student_Form extends javax.swing.JFrame {
             }
             
             
-            // Closing Connection
             st.close();
             con.close();
             System.out.println("Disconnected !!");
@@ -360,44 +326,26 @@ public class Student_Form extends javax.swing.JFrame {
 
         String x = table.getModel().getValueAt(table.getSelectedRow(), 0).toString();
         try {
-            // Starting Connection
             Class.forName(driver).newInstance();
-            con = DriverManager.getConnection(url,"root","123");
+            con = DriverManager.getConnection(url,"yasser","123456");
             System.out.println("Connected !!");
             
-            // Sql Delete Command
             String sql="DELETE FROM users WHERE UserID = "+x;
             
-            // Executing Sql Command
             st = con.createStatement();
             st.executeUpdate(sql);
             
-            // Closing Connection
             st.close();
             con.close();
             System.out.println("Disconnected !!");
             
-            // Deleting The Deleted Row From the Jtable
             ((DefaultTableModel)table.getModel()).removeRow(table.getSelectedRow());
             
             
-            // Resetting TextFields
             txtname.setText("");
-            txtname.setBackground(Color.white);
-            txtname.setEditable(true);
-            
             txtmail.setText("");
-            txtmail.setBackground(Color.white);
-            txtmail.setEditable(true);
-            
             txtage.setText("");
-            txtage.setBackground(Color.white);
-            txtage.setEditable(true);
-            
             txtphone.setText("");
-            txtphone.setBackground(Color.white);
-            txtphone.setEditable(true);
-            
             userID.setText("");
             errors.setText("");
             
@@ -412,8 +360,6 @@ public class Student_Form extends javax.swing.JFrame {
     private void tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableMouseClicked
         // TODO add your handling code here:
         
-        
-        // Setting TextFields With Their Appropriate Values From The Jtable
         userID.setText(table.getModel().getValueAt(table.getSelectedRow(), 0).toString());
         txtname.setText(table.getModel().getValueAt(table.getSelectedRow(), 1).toString());
         txtmail.setText(table.getModel().getValueAt(table.getSelectedRow(), 2).toString());
@@ -431,22 +377,17 @@ public class Student_Form extends javax.swing.JFrame {
         String phone = txtphone.getText();
         
         
-        // Regular Exepression
         boolean status;
         String Email_Pattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
         Pattern pattern = Pattern.compile(Email_Pattern);
         Matcher matcher = pattern.matcher(mail);
-
-        status = matcher.matches();
         
         
-        // Text Fields Validation (No Empty Fields)
         if (name.isEmpty() || mail.isEmpty() || age.isEmpty() || phone.isEmpty()) {
             errors.setText("One or more inputs are missing !!");
         }
-        // Email Validation (Regular Exepression)
-        else if (status == false) {
+        else if (matcher.matches() == false) {
             errors.setText("Invalid Email");
         } else {
 
@@ -454,52 +395,34 @@ public class Student_Form extends javax.swing.JFrame {
 
             try {
                 
-                // Starting Connection
                 Class.forName(driver).newInstance();
-                con = DriverManager.getConnection(url,"root","123");
+                con = DriverManager.getConnection(url,"yasser","123456");
                 System.out.println("Connected !!");
                 
-                // Sql Statement Command For Updating Users Entity
                 String sql="update users set Name = '" + name + "', Email = '" +mail+ "', Age = '" +age+
                         "', Phone= '"+phone+"' where UserID = " + userID.getText();
                 
-                // Executing Sql Command
                 st = con.createStatement();
                 st.executeUpdate(sql);
                 
-                // Closing Connection
                 st.close();
                 con.close();
                 System.out.println("Disconnected !!");
                 
                 
-                // Updating The Jtable
                 table.getModel().setValueAt(txtmail.getText(), table.getSelectedRow(), 2);
                 table.getModel().setValueAt(txtname.getText(), table.getSelectedRow(), 1);
                 table.getModel().setValueAt(txtage.getText(), table.getSelectedRow(), 3);
                 table.getModel().setValueAt(txtphone.getText(), table.getSelectedRow(), 4);
                 
-                // Resetting TextFields
+                
                 txtname.setText("");
-                txtname.setBackground(Color.white);
-                txtname.setEditable(true);
-
                 txtmail.setText("");
-                txtmail.setBackground(Color.white);
-                txtmail.setEditable(true);
-
                 txtage.setText("");
-                txtage.setBackground(Color.white);
-                txtage.setEditable(true);
-
                 txtphone.setText("");
-                txtphone.setBackground(Color.white);
-                txtphone.setEditable(true);
-
                 userID.setText("");
                 errors.setText("");
 
-             // Handling Exceptions
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -511,18 +434,14 @@ public class Student_Form extends javax.swing.JFrame {
     private void txtnameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtnameKeyPressed
         // TODO add your handling code here:
         
-        // Name Validation (No Numbers)
         int key = evt.getKeyCode();
-        if(!(key >= evt.VK_0 && key <= evt.VK_9) && !(key >= evt.VK_NUMPAD0 && key <= evt.VK_NUMPAD9) || (key == evt.VK_BACK_SPACE)) {
-            
+        if(!(key >= evt.VK_0 && key <= evt.VK_9) && !(key >= evt.VK_NUMPAD0 && key <= evt.VK_NUMPAD9) || (key == evt.VK_BACK_SPACE))
+        {
             txtname.setEditable(true);
-            txtname.setBackground(Color.green);
-            
-        } else {
-            
+        }
+        else
+        {
             txtname.setEditable(false);
-            txtname.setBackground(Color.red);
-            
         }
 
     }//GEN-LAST:event_txtnameKeyPressed
@@ -531,20 +450,16 @@ public class Student_Form extends javax.swing.JFrame {
     
     private void txtageKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtageKeyPressed
         // TODO add your handling code here:
-        
-        
-        // Age Validation (Only Numbers)
+       
         int key = evt.getKeyCode();
-        if((key >= evt.VK_0 && key <= evt.VK_9) || (key >= evt.VK_NUMPAD0 && key <= evt.VK_NUMPAD9) || (key == evt.VK_BACK_SPACE)) {
-            
+        if((key >= evt.VK_0 && key <= evt.VK_9) || (key >= evt.VK_NUMPAD0 && key <= evt.VK_NUMPAD9) || (key == evt.VK_BACK_SPACE))
+        {
             txtage.setEditable(true);
-            txtage.setBackground(Color.green);
             
-        } else {
-            
+        }
+        else
+        {
             txtage.setEditable(false);
-            txtage.setBackground(Color.red);
-            
         }
         
     }//GEN-LAST:event_txtageKeyPressed
@@ -555,18 +470,14 @@ public class Student_Form extends javax.swing.JFrame {
         // TODO add your handling code here:
         
         
-        // Phone Number Validation (Only Numbers)
         int key = evt.getKeyCode();
-        if((key >= evt.VK_0 && key <= evt.VK_9) || (key >= evt.VK_NUMPAD0 && key <= evt.VK_NUMPAD9) || (key == evt.VK_BACK_SPACE)) {
-            
+        if((key >= evt.VK_0 && key <= evt.VK_9) || (key >= evt.VK_NUMPAD0 && key <= evt.VK_NUMPAD9) || (key == evt.VK_BACK_SPACE))
+        {
             txtphone.setEditable(true);
-            txtphone.setBackground(Color.green);
-            
-        } else {
-            
+        }
+        else
+        {
             txtphone.setEditable(false);
-            txtphone.setBackground(Color.red);
-            
         }
         
     }//GEN-LAST:event_txtphoneKeyPressed
@@ -575,24 +486,7 @@ public class Student_Form extends javax.swing.JFrame {
     
     
     private void txtmailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtmailKeyReleased
-        // TODO add your handling code here:
-        
-        
-        // Email Validation On Key Released
-        boolean status;
-        
-        String Email_Pattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-
-        Pattern pattern = Pattern.compile(Email_Pattern);
-        Matcher matcher = pattern.matcher(txtmail.getText());
-
-        status = matcher.matches();
-        
-        if (status) {
-            txtmail.setBackground(Color.green);
-        } else {
-            txtmail.setBackground(Color.red);
-        }
+       
     }//GEN-LAST:event_txtmailKeyReleased
 
     
