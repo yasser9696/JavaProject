@@ -5,7 +5,6 @@
  */
 package task;
 
-// Importing The Required Libraries
 import java.sql.DriverManager;
 import java.sql.*;
 import java.util.regex.Matcher;
@@ -14,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author mohammed
+ * @author yasser
  */
 public class Student_Form extends javax.swing.JFrame {
 
@@ -230,11 +229,9 @@ public class Student_Form extends javax.swing.JFrame {
         Matcher matcher = pattern.matcher(mail);
 
         
-        // Text Fields Validation (No Empty Fields)
         if (name.isEmpty() || mail.isEmpty() || age.isEmpty() || phone.isEmpty()) {
             errors.setText("One or more inputs are missing !!");
         }
-        // Email Validation (Regular Exepression)
         else if (matcher.matches() == false) {
             errors.setText("Invalid Email");
         } else {
@@ -376,8 +373,6 @@ public class Student_Form extends javax.swing.JFrame {
         String age = txtage.getText();
         String phone = txtphone.getText();
         
-        
-        boolean status;
         String Email_Pattern = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
         Pattern pattern = Pattern.compile(Email_Pattern);
@@ -484,11 +479,6 @@ public class Student_Form extends javax.swing.JFrame {
     
     
     
-    
-    private void txtmailKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtmailKeyReleased
-       
-    }//GEN-LAST:event_txtmailKeyReleased
-
     
     /**
      * @param args the command line arguments
